@@ -1,5 +1,5 @@
 import sys
-from pySIS.core.libSIS import init, get_status
+from pySIS.core import init, get_status
 from serial import Serial
 import time
 import datetime

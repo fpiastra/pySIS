@@ -1,5 +1,5 @@
 import sys
-from pySIS.core.libSIS import goto_position, get_position, get_status
+from pySIS.core import goto_position, get_position, get_status
 from serial import Serial
 import time
 from datetime import datetime
@@ -94,6 +94,8 @@ if __name__ == '__main__':
             abs_pos_msb = rx_arr[2 + 4 * UNIT]
             inc_pos_lsb = rx_arr[3 + 4 * UNIT]
             inc_pos_msb = rx_arr[4 + 4 * UNIT]
+            abs_raw_lsb = rx_arr[13 + 2 * UNIT]
+            abs_raw_msb = rx_arr[14 + 2 * UNIT]
             rx_pos_abs = 256 * abs_pos_msb + abs_pos_lsb
             rx_pos_inc = 256 * inc_pos_msb + inc_pos_lsb
             rx_position = rx_pos_inc
@@ -114,15 +116,15 @@ if __name__ == '__main__':
         #
 
         if not (abs_pos_err or inc_pos_err): 
-            print(f'Pos inc: {rx_pos_inc}; Pos abs: {rx_pos_abs}')
+            print(f'Pos inc: {rx_pos_inc}; Pos abs: {rx_pos_abs}; Turns: {int(abs_raw_msb)}_{int{abs_raw_lsb}}')
             if FNAME is not None:
                 with open(FNAME, 'a') as logfile:
-                    logfile.write(f'{unixitme}~{rx_pos_inc}~{rx_pos_abs}\n')
+                    logfile.write(f'{unixitme}~{rx_pos_inc}~{rx_pos_abs}~{int(abs_raw_msb)}~{int{abs_raw_lsb}}\n')
         
         time.sleep(DELTA_T)
+    # Close of the while loop
     
-    print(f'\n\nChecking position after stop:')
-
+    print('\n\nChecking position after stop:')
     
     try:
         tx_arr, rx_arr = get_position(ser)
@@ -130,6 +132,8 @@ if __name__ == '__main__':
         abs_pos_msb = rx_arr[2 + 4 * UNIT]
         inc_pos_lsb = rx_arr[3 + 4 * UNIT]
         inc_pos_msb = rx_arr[4 + 4 * UNIT]
+        abs_raw_lsb = rx_arr[13 + 2 * UNIT]
+        abs_raw_msb = rx_arr[14 + 2 * UNIT]
         rx_pos_abs = 256 * abs_pos_msb + abs_pos_lsb
         rx_pos_inc = 256 * inc_pos_msb + inc_pos_lsb
         rx_position = rx_pos_inc
@@ -138,6 +142,8 @@ if __name__ == '__main__':
         pass
     except Exception as err:
         print(f'ERROR --> After the "get_position" request. Exception message: {err}', file=sys.stderr)
+    #
     
     print("Current incremental encoder position:",rx_pos_inc)
     print("Current absolute encoder position:",rx_pos_abs)
+    print(f"Current absolute encoder bytes: {abs_raw_msb} {abs_raw_lsb}\n")

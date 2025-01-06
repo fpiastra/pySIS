@@ -1,5 +1,5 @@
 import sys
-from Sis_libs import BoxConfig
+from pySIS.core import BoxConfig
 from serial import Serial
 import time
 import traceback
