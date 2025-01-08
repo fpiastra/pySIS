@@ -72,20 +72,6 @@ if __name__ == '__main__':
             #file.write(current_time + ': Maximum waiting time has expired. Make sure that communication works properly, and check positions.\n')
             break
         #
-        
-        try:
-            tx_arr, rx_arr = get_status(ser)
-            rx_motor = rx_arr[8+UNIT] & 3
-        except (IndexError):
-            continue
-        except Exception as err:
-            print(f'ERROR --> After the "get_status" request. Exception message: {err}', file=sys.stderr)
-        #
-
-        if (rx_motor == 0):
-            print(f"Movement of unit {UNIT} finished.")
-            break
-        #
 
         try:
             unixitme = time.time()
@@ -122,6 +108,20 @@ if __name__ == '__main__':
                     logfile.write(f'{unixitme}~{rx_pos_inc}~{rx_pos_abs}~{int(abs_raw_msb)}~{int(abs_raw_lsb)}\n')
         
         time.sleep(DELTA_T)
+
+        try:
+            tx_arr, rx_arr = get_status(ser)
+            rx_motor = rx_arr[8+UNIT] & 3
+        except (IndexError):
+            continue
+        except Exception as err:
+            print(f'ERROR --> After the "get_status" request. Exception message: {err}', file=sys.stderr)
+        #
+
+        if (rx_motor == 0):
+            print(f"Movement of unit {UNIT} finished.")
+            break
+        #
     # Close of the while loop
     
     print('\n\nChecking position after stop:')
