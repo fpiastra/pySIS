@@ -12,6 +12,8 @@ UNIT = 0
 POS = 0 #In mm
 FNAME = None #The file where the data is dumped
 
+DEBUG = False #Hardcoded switch to be changed manually
+
 MAXPOS = 8890 #Maximum possible extension (in mm) due to "non SIS" limitations (e.g. the calibration tubes)
 
 #position/status check every delta_t seconds
@@ -48,7 +50,7 @@ if __name__ == '__main__':
         FNAME = name + ext
         
         #Create the empty file
-        with open(FNAME, 'W') as _f:
+        with open(FNAME, 'w') as _f:
             pass
     
     
@@ -58,6 +60,16 @@ if __name__ == '__main__':
 
     ser = Serial(PORT, baudrate=9600, timeout=0.5)
     tx_arr, rx_arr = goto_position(ser, UNIT, POS)
+    if rx_arr is None:
+        sys.exit(1)
+    #
+    #Check the correct response
+    if DEBUG and (rx_arr[2]!=0):
+        print(f'ERROR --> Wrong acknowledgement byte from the "goto_position" request. Error code: {int(rx_arr[2])}')
+        print(tx_arr)
+        print(rx_arr)
+        sys.exit(1)
+        
 
     print("Requested positions have been transmitted.")
     #file.write(current_time + ': Requested positions have been transmitted.\n')
@@ -102,7 +114,7 @@ if __name__ == '__main__':
         #
 
         if not (abs_pos_err or inc_pos_err): 
-            print(f'Pos inc: {rx_pos_inc}; Pos abs: {rx_pos_abs}; Turns: {int(abs_raw_msb)}_{int(abs_raw_lsb)}')
+            print(f'Pos inc: {rx_pos_inc}; Pos abs: {rx_pos_abs}; Abs raw pos: {int(abs_raw_msb)} {int(abs_raw_lsb)}')
             if FNAME is not None:
                 with open(FNAME, 'a') as logfile:
                     logfile.write(f'{unixitme}~{rx_pos_inc}~{rx_pos_abs}~{int(abs_raw_msb)}~{int(abs_raw_lsb)}\n')
