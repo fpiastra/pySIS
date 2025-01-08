@@ -1,4 +1,8 @@
 import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from pySIS.core import init, get_status
 from serial import Serial
 import time
