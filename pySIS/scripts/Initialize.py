@@ -2,7 +2,7 @@ import sys
 from pySIS.core import init, get_status
 from serial import Serial
 import time
-import datetime
+from datetime import datetime
 
 
 #These below are default values that can be overwritten by the user at the command line

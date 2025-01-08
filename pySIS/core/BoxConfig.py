@@ -1,4 +1,4 @@
-from libSIS import *
+from .libSIS import *
 
 class BoxConfig:
     # Constants

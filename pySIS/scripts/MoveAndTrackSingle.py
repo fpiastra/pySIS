@@ -116,10 +116,10 @@ if __name__ == '__main__':
         #
 
         if not (abs_pos_err or inc_pos_err): 
-            print(f'Pos inc: {rx_pos_inc}; Pos abs: {rx_pos_abs}; Turns: {int(abs_raw_msb)}_{int{abs_raw_lsb}}')
+            print(f'Pos inc: {rx_pos_inc}; Pos abs: {rx_pos_abs}; Turns: {int(abs_raw_msb)}_{int(abs_raw_lsb)}')
             if FNAME is not None:
                 with open(FNAME, 'a') as logfile:
-                    logfile.write(f'{unixitme}~{rx_pos_inc}~{rx_pos_abs}~{int(abs_raw_msb)}~{int{abs_raw_lsb}}\n')
+                    logfile.write(f'{unixitme}~{rx_pos_inc}~{rx_pos_abs}~{int(abs_raw_msb)}~{int(abs_raw_lsb)}\n')
         
         time.sleep(DELTA_T)
     # Close of the while loop
