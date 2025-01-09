@@ -3,6 +3,7 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from pySIS.core import BoxConfig
 from serial import Serial
 import time
 import traceback
@@ -12,7 +13,7 @@ if __name__ == '__main__':
     
     if len(sys.argv) != 3:
         print(f"Error: wrong number of few arguments for {sys.argv[0]} script.", file=sys.stderr)
-        print("Synopsys: python GetConfigIntoFile.py <serport> <filename>", file=sys.stderr)
+        print(f"Synopsys: python {sys.argv[0]} <serport> <filename>", file=sys.stderr)
         sys.exit(1)
     #
     PORT = sys.argv[1]
