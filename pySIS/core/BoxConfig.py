@@ -27,6 +27,17 @@ class BoxConfig:
             return
         #
         self.AbsEncCorrData[unit] = [0] * 64
+    
+    def reset_corr_table_single(self, unit):
+        self.reset_corr_tables(unit)
+    
+    def set_corr_table(self, unit, corr_arr):
+        #The following fails if the array_is not an 64 long array of integers 
+        _corr_arr = [int(corr_arr[iEl]) for iEl in range(64)]
+        
+        #This fails if the unit is wrong
+        self.AbsEncCorrData[unit] = [el for el in _corr_arr]
+
         
 
     def read_data_from_file(self, fname):
