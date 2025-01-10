@@ -30,9 +30,9 @@ if __name__ == '__main__':
 
     timestamp = datetime.now()
 
-    if len(sys.argv) < 2:
-        print('Too few arguments. At least the device name is required!', file=sys.stderr)
-        print('Synopsys: python MoveAndTrackSingle.py <serport> <unit_number> <pos> [logfilename]\n', file=sys.stderr)
+    if len(sys.argv) < 3:
+        print(f'Too few arguments for the {sys.argv[0]} script!', file=sys.stderr)
+        print(f'Synopsys: python {sys.argv[0]} <serport> <unit_number> <pos> [logfilename]\n', file=sys.stderr)
         sys.exit(1)
     
     
@@ -40,11 +40,10 @@ if __name__ == '__main__':
 
     UNIT = int(sys.argv[2])
     
-    if len(sys.argv) > 3:
-        POS = int(sys.argv[3])
-        if POS>MAXPOS:
-            print(f'WARNING --> Requested position {POS} not allowed. Resetting to position {MAXPOS}.')
-            POS = MAXPOS
+    POS = int(sys.argv[3])
+    if POS>MAXPOS:
+        print(f'WARNING --> Requested position {POS} not allowed. Resetting to position {MAXPOS}.')
+        POS = MAXPOS
     
     if len(sys.argv) > 4:
         FNAME = sys.argv[4]
